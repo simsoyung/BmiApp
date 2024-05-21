@@ -75,14 +75,6 @@
                                 <rect key="frame" x="196" y="101" width="166" height="251"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAr-8M-zFI">
-                                <rect key="frame" x="284" y="468" width="30" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <connections>
-                                    <action selector="eyesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4PS-jb-ky1"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mgR-ou-FuI">
                                 <rect key="frame" x="16" y="669" width="291" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -90,6 +82,14 @@
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="resultButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sVG-d3-yWf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAr-8M-zFI">
+                                <rect key="frame" x="279" y="468" width="37" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="eyesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4PS-jb-ky1"/>
                                 </connections>
                             </button>
                         </subviews>

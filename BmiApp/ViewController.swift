@@ -48,12 +48,17 @@ class ViewController: UIViewController {
         textFieldSetting(text: weightTextField)
         weightTextField.isSecureTextEntry = true
         
+        
         randomButtonSetting()
         resultButtonSetting()
         
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        eyesButton.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
+        eyesButton.tintColor = .gray
+        
     }
     
     // MARK: Action
@@ -67,8 +72,8 @@ class ViewController: UIViewController {
         let value = heightNum / 100
         heightNum = value * value
         numResult = weightNum / heightNum
-        buttonClicked()
         calcBmi()
+        buttonClicked()
     }
     
     @IBAction func resultButtonTapped(_ sender: UIButton) {
@@ -76,8 +81,8 @@ class ViewController: UIViewController {
         let value = heightNum / 100
         heightNum = value * value
         numResult = weightNum / heightNum
-        buttonClicked()
         calcBmi()
+        buttonClicked()
     }
     
     @IBAction func heightTextResult(_ sender: UITextField) {
@@ -106,13 +111,14 @@ class ViewController: UIViewController {
     
     
     @IBAction func eyesButtonTapped(_ sender: UIButton) {
-        weightTextField.isSecureTextEntry.toggle()
-        eyesButton.isSelected.toggle()
-        let eyeImage = eyesButton.isSelected ? "password-shown-icon" : "password hidden-icon"
-        eyesButton.setImage(UIImage(named: eyeImage), for: .normal)
-        eyesButton.tintColor = .clear
+        // 눈 버튼 누르면 -> 몸무게 보이게
+        sender.setImage(UIImage(systemName: "eye.slash"),for: .highlighted)
+        sender.setTitle(weightTextField.text, for: .highlighted)
+        sender.setImage(UIImage(systemName: "eye.slash.fill"),for: .normal)
+        sender.setTitle(weightTextField.text, for: .normal)
+
     }
-    
+        
     // MARK: func
     
     func largeTitleSetting(){
@@ -164,6 +170,7 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonClicked(){
+        
         let alert = UIAlertController(
             title: "BMI 결과",
             message: "\(String.init(format: "%.2f", numResult))로 \(caseResult)입니다",
@@ -176,6 +183,11 @@ class ViewController: UIViewController {
         alert.addAction(check)
         
         present(alert, animated: true)
+        
+        heightNum = 0.0
+        weightNum = 0.0
+        caseResult = ""
+        numResult = 0.0
     }
     
     @objc func errorAlert(){
@@ -192,17 +204,19 @@ class ViewController: UIViewController {
     func calcBmi(){
         //텍스트 필드에서 받아온 키, 몸무게 받아서 BMI 계산해주기 결과값 tappedbutton
         let result = numResult
-        if result <= 18.4 {
+        if result <= 18.40 {
             caseResult = "저체중"
-        }else if result <= 22.9 {
+        }else if result <= 22.90{
             caseResult = "정상체중"
-        }else if result <= 24.9 {
+        }else if result <= 24.90 {
             caseResult = "과체중"
-        }else if result <= 29.9 {
+        }else if result <= 29.90 {
             caseResult = "비만"
         }else {
             caseResult = "고도비만"
         }
+        
     }
-
 }
+
+
