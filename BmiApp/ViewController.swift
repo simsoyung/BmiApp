@@ -78,11 +78,16 @@ class ViewController: UIViewController {
     
     @IBAction func resultButtonTapped(_ sender: UIButton) {
         //버튼 누르면 property변수에 들어있는 값을 calcBmi함수 실행하고 결과값을 buttonClicked로 보내기,
-        let value = heightNum / 100
-        heightNum = value * value
-        numResult = weightNum / heightNum
-        calcBmi()
-        buttonClicked()
+        
+        if heightNum != 0.0 {
+            let value = heightNum / 100
+            heightNum = value * value
+            numResult = weightNum / heightNum
+            calcBmi()
+            buttonClicked()
+        } else {
+            errorAlert()
+        }
     }
     
     @IBAction func heightTextResult(_ sender: UITextField) {
@@ -170,7 +175,7 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonClicked(){
-        
+    
         let alert = UIAlertController(
             title: "BMI 결과",
             message: "\(String.init(format: "%.2f", numResult))로 \(caseResult)입니다",
@@ -188,6 +193,8 @@ class ViewController: UIViewController {
         weightNum = 0.0
         caseResult = ""
         numResult = 0.0
+        heightTextField.text = ""
+        weightTextField.text = ""
     }
     
     @objc func errorAlert(){
