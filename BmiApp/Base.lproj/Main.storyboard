@@ -92,6 +92,15 @@
                                     <action selector="eyesButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4PS-jb-ky1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hko-Le-q7R">
+                                <rect key="frame" x="16" y="614" width="291" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="resetButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qTD-8p-xXZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -104,6 +113,7 @@
                         <outlet property="image" destination="sln-K9-cIl" id="FOo-rl-UsQ"/>
                         <outlet property="largeTitle" destination="Ae2-aa-NrY" id="IWI-74-tkd"/>
                         <outlet property="randomButton" destination="3JC-od-FkN" id="1Kn-qc-NtT"/>
+                        <outlet property="resetButton" destination="hko-Le-q7R" id="XW3-xk-nQs"/>
                         <outlet property="resultButton" destination="mgR-ou-FuI" id="N5k-vK-jbc"/>
                         <outlet property="subTitle" destination="l5U-su-FS4" id="Jh4-pE-j0T"/>
                         <outlet property="weightLabel" destination="0L3-eV-Cin" id="zj5-ao-Cy7"/>

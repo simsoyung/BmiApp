@@ -22,15 +22,10 @@ class ViewController: UIViewController {
     @IBOutlet var eyesButton: UIButton!
     @IBOutlet var randomButton: UIButton!
     @IBOutlet var resultButton: UIButton!
+    @IBOutlet var resetButton: UIButton!
     
     @IBOutlet var heightTextField: UITextField!
     @IBOutlet var weightTextField: UITextField!
-    
-    // MARK: Prooerty
-    var heightNum = 0.0
-    var weightNum = 0.0
-    var caseResult = ""
-    var numResult = 0.0
     
     // MARK: View
     override func viewDidLoad() {
@@ -48,9 +43,10 @@ class ViewController: UIViewController {
         textFieldSetting(text: weightTextField)
         weightTextField.isSecureTextEntry = true
         
-        
         randomButtonSetting()
-        resultButtonSetting()
+        
+        resultButtonSetting(resetButton, text: "처음으로")
+        resultButtonSetting(resultButton, text: "결과 확인")
         
         let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
@@ -63,26 +59,47 @@ class ViewController: UIViewController {
     
     // MARK: Action
     
+    @IBAction func resetButtonTapped(_ sender: UIButton) {
+        //리셋버튼 누르면 키, 몸무게, bmi결과 숫자, bmi결과 텍스트 리셋!
+        reset()
+    }
+    
     @IBAction func randomButtonTapped(_ sender: UIButton) {
         // 랜덤버튼 누르면 랜덤 변수(키,몸무게)만들어서 랜덤으로 뽑아온 값을 calcBmi함수 실행하고 결과값을 buttonClicked로 보내기 (얼럿)#selector(buttonClicked) 결과보여주기(숫자 00까지만 표시))
-        let randomHeight = Int.random(in: 140...200)
-        let randomWeight = Int.random(in: 40...100)
-        heightNum = Double(randomHeight)
-        weightNum = Double(randomWeight)
-        let value = heightNum / 100
-        heightNum = value * value
-        numResult = weightNum / heightNum
+//        let randomHeight = Int.random(in: 140...200)
+//        let randomWeight = Int.random(in: 40...100)
+//        heightNum = Double(randomHeight)
+//        weightNum = Double(randomWeight)
+//        let value = heightNum / 100
+//        heightNum = value * value
+//        numResult = weightNum / heightNum
+        var randomHeight = Double.random(in: 140...200)
+        let randomWeight = Double.random(in: 40...100)
+        UserDefaults.standard.set(randomHeight, forKey: "heightNum")
+        UserDefaults.standard.set(randomWeight, forKey: "weightNum")
+        //랜덤 더블값 뽑아서 UserDefaults에 몸무게, 키 저장
+        
+        let value = randomHeight / 100
+        randomHeight = value * value
+        let numResult = randomWeight / randomHeight
+        UserDefaults.standard.set(numResult, forKey: "numResult")
+        //계산 후 bmi 결과 값 UserDefaults에 저장
+        
         calcBmi()
+        //bmi결과에 맞는 텍스트를 담아둠
         buttonClicked()
     }
     
     @IBAction func resultButtonTapped(_ sender: UIButton) {
         //버튼 누르면 property변수에 들어있는 값을 calcBmi함수 실행하고 결과값을 buttonClicked로 보내기,
+        var height = UserDefaults.standard.double(forKey: "heightNum")
+        let weight = UserDefaults.standard.double(forKey: "weightNum")
         
-        if heightNum != 0.0 {
-            let value = heightNum / 100
-            heightNum = value * value
-            numResult = weightNum / heightNum
+        if height != 0.0 {
+            let value = height / 100
+            height = value * value
+            let numResult = weight / height
+            UserDefaults.standard.set(numResult, forKey: "numResult")
             calcBmi()
             buttonClicked()
         } else {
@@ -96,7 +113,8 @@ class ViewController: UIViewController {
         //아무곳이나 클릭하면 키패드 내려가기,
         let text = sender.text ?? "0"
         if Double(text) != nil {
-            heightNum = Double(text) ?? 0
+            let height = text
+            UserDefaults.standard.set(height, forKey: "heightNum")
         } else {
             errorAlert()
         }
@@ -108,7 +126,8 @@ class ViewController: UIViewController {
         // 입력받은 글자를 변수에 넣어주고, 텍스트필드 text 초기화, 입력값 안보여주기
         let text = sender.text ?? "0"
         if Double(text) != nil {
-            weightNum = Double(text) ?? 0
+            let weight = text
+            UserDefaults.standard.set(weight, forKey: "weightNum")
         } else {
             errorAlert()
         }
@@ -166,19 +185,21 @@ class ViewController: UIViewController {
         text.keyboardType = .numberPad
     }
     
-    func resultButtonSetting(){
-        resultButton.setTitle("결과 확인", for: .normal)
-        resultButton.titleLabel?.font = .systemFont(ofSize: 17.0, weight: .bold)
-        resultButton.setTitleColor(.white, for: .normal)
-        resultButton.backgroundColor = .purple
-        resultButton.layer.cornerRadius = 20
+    func resultButtonSetting(_ sender: UIButton, text: String){
+        sender.setTitle(text, for: .normal)
+        sender.titleLabel?.font = .systemFont(ofSize: 17.0, weight: .bold)
+        sender.setTitleColor(.white, for: .normal)
+        sender.backgroundColor = .purple
+        sender.layer.cornerRadius = 20
     }
     
     @objc func buttonClicked(){
     
+        let bmiNum = UserDefaults.standard.double(forKey: "numResult")
+        let bmiText = UserDefaults.standard.string(forKey: "textResult")
         let alert = UIAlertController(
             title: "BMI 결과",
-            message: "\(String.init(format: "%.2f", numResult))로 \(caseResult)입니다",
+            message: "\(String.init(format: "%.2f", bmiNum))로 \(bmiText ?? "")입니다",
             preferredStyle: .alert)
         
         let cancel = UIAlertAction(title: "살 뺄게요", style: .destructive)
@@ -189,12 +210,7 @@ class ViewController: UIViewController {
         
         present(alert, animated: true)
         
-        heightNum = 0.0
-        weightNum = 0.0
-        caseResult = ""
-        numResult = 0.0
-        heightTextField.text = ""
-        weightTextField.text = ""
+        reset()
     }
     
     @objc func errorAlert(){
@@ -208,21 +224,35 @@ class ViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    func reset(){
+        UserDefaults.standard.removeObject(forKey: "numResult")
+        UserDefaults.standard.removeObject(forKey: "textResult")
+        UserDefaults.standard.removeObject(forKey: "heightNum")
+        UserDefaults.standard.removeObject(forKey: "weightNum")
+        heightTextField.text = ""
+        weightTextField.text = ""
+    }
+    
     func calcBmi(){
         //텍스트 필드에서 받아온 키, 몸무게 받아서 BMI 계산해주기 결과값 tappedbutton
-        let result = numResult
-        if result <= 18.40 {
-            caseResult = "저체중"
-        }else if result <= 22.90{
-            caseResult = "정상체중"
-        }else if result <= 24.90 {
-            caseResult = "과체중"
-        }else if result <= 29.90 {
-            caseResult = "비만"
-        }else {
-            caseResult = "고도비만"
-        }
         
+        let result = UserDefaults.standard.double(forKey: "numResult")
+        if result <= 18.40 {
+            let text = "저체중"
+            UserDefaults.standard.set(text, forKey: "textResult")
+        }else if result <= 22.90{
+            let text = "정상체중"
+            UserDefaults.standard.set(text, forKey: "textResult")
+        }else if result <= 24.90 {
+            let text = "과체중"
+            UserDefaults.standard.set(text, forKey: "textResult")
+        }else if result <= 29.90 {
+            let text = "비만"
+            UserDefaults.standard.set(text, forKey: "textResult")
+        }else {
+            let text = "고도비만"
+            UserDefaults.standard.set(text, forKey: "textResult")
+        }
     }
 }
 
