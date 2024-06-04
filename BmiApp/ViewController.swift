@@ -6,31 +6,33 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
 
     
     // MARK: Outlet,Button
     
-    @IBOutlet var largeTitle: UILabel!
-    @IBOutlet var subTitle: UILabel!
-    @IBOutlet var heightLabel: UILabel!
-    @IBOutlet var weightLabel: UILabel!
+    let largeTitle = UILabel()
+    let subTitle = UILabel()
+    let heightLabel = UILabel()
+    let weightLabel = UILabel()
     
-    @IBOutlet var image: UIImageView!
+    let image = UIImageView()
     
-    @IBOutlet var eyesButton: UIButton!
-    @IBOutlet var randomButton: UIButton!
-    @IBOutlet var resultButton: UIButton!
-    @IBOutlet var resetButton: UIButton!
+    let eyesButton = UIButton()
+    let randomButton = UIButton()
+    let resultButton = UIButton()
+    let resetButton = UIButton()
     
-    @IBOutlet var heightTextField: UITextField!
-    @IBOutlet var weightTextField: UITextField!
+    let heightTextField = UITextField()
+    let weightTextField = UITextField()
     
     // MARK: View
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configureHierarchy()
+        configureLayout()
         largeTitleSetting()
         textTitleSetting(setTitle: subTitle, text: "당신의 BMI 지수를  알려드릴게요.", line: 2)
         textTitleSetting(setTitle: heightLabel, text: "키가 어떻게 되시나요?", line: 1)
@@ -145,6 +147,56 @@ class ViewController: UIViewController {
         
     // MARK: func
     
+    func configureLayout(){
+        view.addSubview(largeTitle)
+        view.addSubview(subTitle)
+        view.addSubview(heightLabel)
+        view.addSubview(weightLabel)
+        
+        view.addSubview(image)
+        
+        view.addSubview(eyesButton)
+        view.addSubview(randomButton)
+        view.addSubview(resultButton)
+        view.addSubview(resetButton)
+        
+        view.addSubview(heightTextField)
+        view.addSubview(weightTextField)
+    }
+    
+    func configureHierarchy(){
+        largeTitle.snp.makeConstraints { make in
+            make.top.equalTo(42)
+            make.leading.equalTo(16)
+            make.width.equalTo(170)
+            make.height.equalTo(38)
+        }
+        subTitle.snp.makeConstraints { make in
+            make.top.equalTo(largeTitle.snp.bottom)
+            make.leading.equalTo(largeTitle.snp.leading)
+            make.width.equalTo(100)
+            make.height.equalTo(38)
+        }
+        heightLabel.snp.makeConstraints { make in
+            make.top.equalTo(subTitle.snp.bottom).offset(140)
+            make.leading.equalTo(subTitle.snp.leading)
+            make.width.equalTo(160)
+            make.height.equalTo(30)
+        }
+        heightTextField.snp.makeConstraints { make in
+            make.top.equalTo(heightLabel.snp.bottom).offset(4)
+            make.leading.equalTo(heightLabel.snp.leading)
+            make.width.equalTo(300)
+            make.height.equalTo(35)
+        }
+        weightLabel.snp.makeConstraints { make in
+            make.top.equalTo(heightTextField.snp.bottom).offset(48)
+            make.leading.equalTo(heightTextField.snp.leading)
+            make.width.equalTo(160)
+            make.height.equalTo(30)
+        }
+        
+    }
     func largeTitleSetting(){
         largeTitle.text = "BMI Calculator"
         largeTitle.font = .systemFont(ofSize: 22, weight: .bold)
